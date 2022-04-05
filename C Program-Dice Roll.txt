@@ -1,0 +1,360 @@
+#include<stdio.h>   
+#include<stdlib.h>
+#include<time.h>
+#include<conio.h>
+#include<stdbool.h>
+/*Header files- #include <studio.h>
+                #include<conio.h>-for input fuctions e.g. sanf, printf
+                #include<time.h>
+                #include<stdlib.h>-to seed random number generator
+                #include<stdbool.h>-bool which expands to _Bool,true which expands to 1,false which expands to 0*/
+
+int dice_roll[500], repeat[500][2], i, j, index, count = 1, irepeat = 0;
+/*Here, dice_roll is a one dimensional array which will represent the list of 
+random numbers generated from dice throws.
+Repeat is a two-dimensional (2d) array. The array can hold 1000 elements. 
+You can think the array as a table with 500 rows and each row has 2 columns.*/
+
+/*****************************************
+
+Function to check whether the outcome is not present
+
+****************************************/
+
+int checkOutCome(int num1,int outcomeCount)
+{
+
+for(int k=0;k<outcomeCount;k++){
+if(repeat[k][0] == num1){
+return 1;
+}
+}
+
+return 0;
+}
+
+
+
+
+/*Here, the computer asks the player to opt for the preferred language, 
+  i.e english or french for playing*/
+
+int main ()
+{
+srand (time (NULL));
+int choice;
+/
+printf("You can choose English or French language before proceeding. \nVous pouvez choisir la langue anglaise ou française avant de continuer.");
+printf("If you are more comfortable with English language enter number(1). \nSi vous êtes plus à l'aise avec la langue française, entrez le numéro (0) : ");
+scanf("%d", & choice);
+int faces;
+switch (choice) /*If the player enters (1), he/she proceeds with case 1- English, 
+                  else when he/she enters (0), the player proceeds with case 2*/
+{
+case 1:
+
+printf("\t  Hi! Welcome to our Dice Rolling Game!!!");
+printf("\n *****************************************************************************");
+printf ("\n \t Enter the number of faces: "); /*Computer asks player to input the number of faces*/
+
+scanf ("%d", &faces); /*scanf function allows player to 
+                        enter the value for the number of faces*/
+
+
+
+for (int f = 1; f > 0; f++)  /*a range to show that the die comprise of 
+                               positive numbers starting by 1 onwards*/ 
+{
+
+if (faces < 1 || faces > 25) /*a range to tell the player that the
+                              number of faces should be between 1 and 25*/
+{
+
+printf
+("Error! The value of faces should be between 1 and 25! \nEnter the value for faces again: "); /*a message to display 
+                                                                                                 wrong input*/
+
+scanf ("%d", &faces); /*allows player to enter and 
+                       display the number of faces*/
+
+}
+
+
+
+else
+{
+
+break; /*to break the loop*/
+
+}
+
+}
+
+printf("\n *****************************************************************************");
+
+int throws;
+
+printf ("\n \t Enter the number of throws: "); /*Computer asks player to 
+                                                 enter the number of throws*/
+
+scanf ("%d", &throws);  /*scanf function allows player to enter 
+                          and display the number of throws*/
+
+for (int a = 1; a > 0; a++) /*a range to show that the number of 
+                             throws are positive starting from 1 onwards*/
+{
+
+if (throws < 1 || throws > 500) /*range for the number of throws to 
+                                  be between 1 and 500*/
+{
+
+printf
+("\n Error! The value of faces should be between 1 and 500! \nEnter the value for throws again: "); /*a message to 
+                                                                                                      display wrong input*/
+
+scanf ("%d", &throws); /*prompt player to enter 
+                        the number of throws*/
+
+}
+
+else
+{
+
+break;
+
+}
+
+
+
+}
+
+
+
+printf ("Generating throws: \n"); /*displaying the number of throws*/
+
+
+
+
+for (i = 0; i < throws; i++) /*loop indicates that i is in the range of 0 and 
+                               the number of throws has been input by the player */
+{
+dice_roll[i] = 1 + rand () % faces;
+printf ("[%d],", dice_roll[i]); /*to generate a random number*/
+
+
+}
+
+for (i = 0; i < throws; i++)
+{
+for (j = i + 1; j < throws; j++)
+{
+if (dice_roll[i] > dice_roll[j])
+{
+dice_roll[i] = dice_roll[i] + dice_roll[j];
+dice_roll[j] = dice_roll[i] - dice_roll[j];
+dice_roll[i] = dice_roll[i] - dice_roll[j];
+
+}
+
+}
+}
+
+printf("\n ************ SUMMARY ************ \n");
+
+for (i = 0; i < throws; )
+{
+for (j = i + 1; j < throws; j++)
+{
+if (dice_roll[i] == dice_roll[j])
+{
+count = count + 1;
+}
+}
+index = i;
+repeat[irepeat][0] = dice_roll[i];
+i = i + count;
+printf ("\n%d repeated %d times", dice_roll[index], count);
+
+repeat[irepeat][1] = count;
+count = 1;
+irepeat++;
+}
+printf("\n **********************************************************");
+printf ("\nThe percentage of the OCCURANCES of the values are: ");
+printf("\n ___________________________________________________________");
+printf ("\n [Outcome] \t(%)");
+for (i = 0; i < irepeat; i++)
+{
+double percentage = (repeat[i][1] / (double) throws) * 100;
+printf ("\n [%d] \t    (%0.2f%%)", repeat[i][0], percentage);
+
+
+}
+
+printf("\n **********************************************************");
+printf ("\nThe list of Values which has ZERO(0%) as occurances: ");
+printf("\n ___________________________________________________________\n");
+
+for (i = 1; i <= faces; i++)
+{
+
+if( checkOutCome(i,irepeat)==0){
+printf (" [%d],", i);
+}
+}
+
+
+printf("\n **********************************************************");
+printf ("\nTHANK YOU FOR PLAYING WITH US");
+printf("\n **********************************************************");break;
+
+case 0:
+printf("\t  Salut! Bienvenue dans notre jeu de roulement de dés !!!");
+printf("\n *****************************************************************************");
+printf ("\n \t Entrez le nombre de faces:");
+
+scanf ("%d", &faces);
+
+
+
+for (int f = 1; f > 0; f++)
+{
+
+if (faces < 1 || faces > 25)
+{
+
+printf
+("Erreur! La valeur des faces doit être comprise entre 1 et 25! \ nSaisissez à nouveau la valeur des faces: ");
+
+scanf ("%d", &faces);
+
+}
+
+
+
+else
+{
+
+break;
+
+}
+
+}
+
+printf("\n *****************************************************************************");
+
+
+printf ("\n \t Entrez le nombre de lancers: ");
+
+scanf ("%d", &throws);
+
+for (int a = 1; a > 0; a++)
+{
+
+if (throws < 1 || throws > 500)
+{
+
+printf
+("\n Erreur! La valeur des faces doit être comprise entre 1 et 500! \ nEntrez à nouveau la valeur des lancers: ");
+
+scanf ("%d", &throws);
+
+}
+
+else
+{
+
+break;
+
+}
+
+
+
+}
+
+
+
+printf ("Générer des lancers: \n");
+
+
+
+
+for (i = 0; i < throws; i++)
+{
+dice_roll[i] = 1 + rand () % faces;
+printf ("[%d],", dice_roll[i]);
+
+
+}
+
+for (i = 0; i < throws; i++)
+{
+for (j = i + 1; j < throws; j++)
+{
+if (dice_roll[i] > dice_roll[j])
+{
+dice_roll[i] = dice_roll[i] + dice_roll[j];
+dice_roll[j] = dice_roll[i] - dice_roll[j];
+dice_roll[i] = dice_roll[i] - dice_roll[j];
+
+}
+
+}
+}
+
+printf("\n ************ SOMMAIRE ************ \n");
+
+for (i = 0; i < throws; )
+{
+for (j = i + 1; j < throws; j++)
+{
+if (dice_roll[i] == dice_roll[j])
+{
+count = count + 1;
+}
+}
+index = i;
+repeat[irepeat][0] = dice_roll[i];
+i = i + count;
+printf ("\n%d s'est répété %d fois", dice_roll[index], count);
+
+repeat[irepeat][1] = count;
+count = 1;
+irepeat++;
+}
+printf("\n **********************************************************");
+printf ("\nLe pourcentage des OCCURANCES des valeurs est: ");
+printf("\n ___________________________________________________________");
+printf ("\n [Résultat] \t(%)");
+for (i = 0; i < irepeat; i++)
+{
+double percentage = (repeat[i][1] / (double) throws) * 100;
+printf ("\n [%d] \t    (%0.2f%%)", repeat[i][0], percentage);
+
+
+}
+
+printf("\n **********************************************************");
+printf ("\nLa liste des valeurs qui a ZERO (0%) comme occurrences: ");
+printf("\n ___________________________________________________________\n");
+
+for (i = 1; i <= faces; i++)
+{
+
+if( checkOutCome(i,irepeat)==0){
+printf (" [%d],", i);
+}
+}
+
+
+printf("\n **********************************************************");
+printf ("\nMERCI DE JOUER AVEC NOUS ");
+printf("\n **********************************************************");break;
+}    
+return 0;
+}
+
+
+
+
+
